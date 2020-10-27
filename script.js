@@ -46,7 +46,26 @@ const piano = {
         c2 : document.querySelector("#c5"),
     },
 
-    keyboardBtnToListen : ["q", "2", "w", "3", "e", "r", "5", "t", "6", "y", "7", "u", "i", "9", "o", "0"],
+    notesToPlay : {},
+
+    notesObjList : {
+            "q" : "c3",
+            "2" : "c#3",
+            "w" : "d3",
+            "3" : "d#3",
+            "e" : "e3",
+            "r" : "f3",
+            "5" : "f#3",
+            "t" : "g3", 
+            "6" : "g#3", 
+            "y" : "a3",
+            "7" : "a#3", 
+            "u" : "b3",
+            "i" : "c4", 
+            "9" : "c#4",
+            "o" : "d4", 
+            "0" : "d#4",
+        },
 
     synth: new Tone.PolySynth().toDestination(),
 
@@ -79,7 +98,7 @@ const piano = {
                 }
                 piano.synth.set({ detune: -1200 });
                 piano.synth.triggerAttack([id]);
-                console.log(piano.synth);
+                // console.log(piano.synth);
 
             });
 
@@ -90,7 +109,7 @@ const piano = {
                 }
                 piano.synth.set({ detune: -1200 });
                 piano.synth.triggerRelease([id]);
-                console.log(piano.synth);
+                // console.log(piano.synth);
 
             });
 
@@ -101,45 +120,41 @@ const piano = {
                 }
                 piano.synth.set({ detune: -1200 });
                 piano.synth.triggerRelease([id]);
-                console.log(piano.synth);
+                // console.log(piano.synth);
 
             });
         });
     },
 
     addkeyBoardListeners : function(){
-        let down = false;
-        this.keyboardBtnToListen.forEach(function(element){
-            document.addEventListener("keypress", function(event){
-                // console.log(event.key);
-                switch (event.key){
-                    case "q":
-                        if(down){
-                            return
-                        }
-                        down = true;
-                        console.log(event.key);
-                        piano.synth.triggerAttack(["c4"]);
-                        break
-                    default:
-                        console.log("default");
-                }
-            });
+        window.addEventListener("keydown", function(event){
+            let key = event.key;
+            piano.notesToPlay[key] = piano.notesObjList[key];
+            console.log(Object.values(piano.notesToPlay));
+            if(Object.values(piano.notesToPlay).includes(piano.notesObjList[key])){
+                console.log("   already there");
+                return
+            }else{
+                // piano.notesToPlay.push(piano.notesObjList[key]);
+                // console.log(piano.notesToPlay);
 
-                document.addEventListener("keyup", function(event){
-                    // console.log(event.key);
-                    switch (event.key){
-                        case "q":
-
-                            down = false;
-                            console.log(event.key);
-                            piano.synth.triggerRelease(["c4"]);
-                            break
-                        default:
-                            console.log("default");
-                    }
-            });
+                // piano.synth.triggerAttack(piano.notesToPlay);
+            }
         });
+
+        // window.addEventListener("keyup", function(event){
+        //     let key = event.key;
+        //     // piano.notesToPlay.splice().indexOf(piano.notesObjList[key]);
+        //     piano.notesToPlay = piano.notesToPlay.splice(piano.notesToPlay.indexOf(piano.notesObjList[key]));
+        //      piano.synth.triggerRelease([piano.notesObjList[key]]);
+        //     console.log(piano.notesToPlay  + " spliced");
+
+        //     // piano.notesToPlay = [];
+        //     // console.log(piano.notesObjList[key]);
+        
+        // });
+
+      
     },
 };
 
