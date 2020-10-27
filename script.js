@@ -30,6 +30,8 @@ const test = document.querySelector(".cs1");
 
 const piano = {
 
+    synth: new Tone.PolySynth().toDestination(),
+
     notes : {
         c1 : document.querySelector("#c4"),
         cs1 : document.querySelector("#cs4"),
@@ -48,7 +50,7 @@ const piano = {
 
     notesToPlay : [],
 
-    keyboardBtnToListen : {
+    notesList : {
             "q" : "c3",
             "2" : "c#3",
             "w" : "d3",
@@ -67,30 +69,16 @@ const piano = {
             "0" : "d#4",
         },
 
-    synth: new Tone.PolySynth().toDestination(),
 
 
     notesArray : [], 
-
-
-    addListeners : function(){
-        // this.notesArray.forEach(function(element){
-        //     console.log(element);
-        // });
-
-    },
 
     initialiseElementsSelector : function(){
         let entries = Object.entries(piano.notes);
         let keys = Object.keys(piano.notes);
         let values = Object.values(piano.notes);
         values.forEach(element => {
-            // element.addEventListener("mousedown", function(){
-                
-            // });
-            // element.addEventListener("mouseup", function(){
-                
-            // });
+
             element.addEventListener("mousedown", async() =>{
                 let id = element.id
                 if(id.includes("s")){
@@ -129,40 +117,28 @@ const piano = {
     addkeyBoardListeners : function(){
         window.addEventListener("keydown", function(event){
             let key = event.key;
-            if(piano.notesToPlay.includes(piano.keyboardBtnToListen[key])){
+            if(piano.notesToPlay.includes(piano.notesList[key])){
                 console.log("   already there");
                 return
             }else{
-                piano.notesToPlay.push(piano.keyboardBtnToListen[key]);
-                // console.log(piano.notesToPlay);
-
+                piano.notesToPlay.push(piano.notesList[key]);
                 piano.synth.triggerAttack(piano.notesToPlay);
-                console.log(piano.notesToPlay);
             }
+
+            this.addEventListener("keyup", function(e){
+                console.log(piano.notesToPlay);
+
+                let spliced;
+                let noteToGetRidOf = piano.notesList[key];
+                console.log(noteToGetRidOf);
+                piano.notesToPlay = [];
+                piano.synth.triggerRelease(noteToGetRidOf);
+            });
         });
 
-        window.addEventListener("keyup", function(event){
-            let key = event.key;
-            let noteToGetRidOf = piano.keyboardBtnToListen[key];
-            let spliced;
-
-            spliced = piano.notesToPlay.splice(piano.notesToPlay.indexOf(noteToGetRidOf));
-            console.log(spliced  + " spliced");
-            console.log(piano.notesToPlay + "__notes to play");
-
-                piano.synth.triggerRelease(spliced);
-
-
-            // piano.notesToPlay = [];
-            // console.log(piano.keyboardBtnToListen[key]);
-        
-        });
-
-      
     },
 };
 
-piano.addListeners();
 piano.initialiseElementsSelector();
 piano.addkeyBoardListeners();
 
