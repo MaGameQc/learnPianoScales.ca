@@ -46,9 +46,9 @@ const piano = {
         c2 : document.querySelector("#c5"),
     },
 
-    notesToPlay : {},
+    notesToPlay : [],
 
-    notesObjList : {
+    keyboardBtnToListen : {
             "q" : "c3",
             "2" : "c#3",
             "w" : "d3",
@@ -129,30 +129,34 @@ const piano = {
     addkeyBoardListeners : function(){
         window.addEventListener("keydown", function(event){
             let key = event.key;
-            piano.notesToPlay[key] = piano.notesObjList[key];
-            console.log(Object.values(piano.notesToPlay));
-            if(Object.values(piano.notesToPlay).includes(piano.notesObjList[key])){
+            if(piano.notesToPlay.includes(piano.keyboardBtnToListen[key])){
                 console.log("   already there");
                 return
             }else{
-                // piano.notesToPlay.push(piano.notesObjList[key]);
+                piano.notesToPlay.push(piano.keyboardBtnToListen[key]);
                 // console.log(piano.notesToPlay);
 
-                // piano.synth.triggerAttack(piano.notesToPlay);
+                piano.synth.triggerAttack(piano.notesToPlay);
+                console.log(piano.notesToPlay);
             }
         });
 
-        // window.addEventListener("keyup", function(event){
-        //     let key = event.key;
-        //     // piano.notesToPlay.splice().indexOf(piano.notesObjList[key]);
-        //     piano.notesToPlay = piano.notesToPlay.splice(piano.notesToPlay.indexOf(piano.notesObjList[key]));
-        //      piano.synth.triggerRelease([piano.notesObjList[key]]);
-        //     console.log(piano.notesToPlay  + " spliced");
+        window.addEventListener("keyup", function(event){
+            let key = event.key;
+            let noteToGetRidOf = piano.keyboardBtnToListen[key];
+            let spliced;
 
-        //     // piano.notesToPlay = [];
-        //     // console.log(piano.notesObjList[key]);
+            spliced = piano.notesToPlay.splice(piano.notesToPlay.indexOf(noteToGetRidOf));
+            console.log(spliced  + " spliced");
+            console.log(piano.notesToPlay + "__notes to play");
+
+                piano.synth.triggerRelease(spliced);
+
+
+            // piano.notesToPlay = [];
+            // console.log(piano.keyboardBtnToListen[key]);
         
-        // });
+        });
 
       
     },
