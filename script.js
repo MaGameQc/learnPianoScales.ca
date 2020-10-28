@@ -50,24 +50,44 @@ const piano = {
 
     notesToPlay : [],
 
-    notesList : {
-            "q" : "c3",
-            "2" : "c#3",
-            "w" : "d3",
-            "3" : "d#3",
-            "e" : "e3",
-            "r" : "f3",
-            "5" : "f#3",
-            "t" : "g3", 
-            "6" : "g#3", 
-            "y" : "a3",
-            "7" : "a#3", 
-            "u" : "b3",
-            "i" : "c4", 
-            "9" : "c#4",
-            "o" : "d4", 
-            "0" : "d#4",
+    // notesList : {
+    //         "q" : "c3",
+    //         "2" : "c#3",
+    //         "w" : "d3",
+    //         "3" : "d#3",
+    //         "e" : "e3",
+    //         "r" : "f3",
+    //         "5" : "f#3",
+    //         "t" : "g3", 
+    //         "6" : "g#3", 
+    //         "y" : "a3",
+    //         "7" : "a#3", 
+    //         "u" : "b3",
+    //         "i" : "c4", 
+    //         "9" : "c#4",
+    //         "o" : "d4", 
+    //         "0" : "d#4",
+    //     },
+
+        controller : {
+            q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
+            2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
+            w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
+            3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
+            e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
+            r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
+            5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
+            t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
+            6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
+            y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
+            7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
+            u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
+            i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
+            9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
+            o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
+            0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
         },
+
 
 
 
@@ -115,26 +135,43 @@ const piano = {
     },
 
     addkeyBoardListeners : function(){
+
+        
+
         window.addEventListener("keydown", function(event){
+            console.log("down");
             let key = event.key;
-            if(piano.notesToPlay.includes(piano.notesList[key])){
-                console.log("   already there");
+            let noteToPlay = piano.controller[key].note;
+            if(piano.controller[key].pressed == true){
                 return
             }else{
-                piano.notesToPlay.push(piano.notesList[key]);
-                piano.synth.triggerAttack(piano.notesToPlay);
+            playNotes(noteToPlay);
+            piano.controller[key].el.backgroundColor = "grey";
             }
+            piano.controller[key].pressed = true;
 
-            this.addEventListener("keyup", function(e){
-                console.log(piano.notesToPlay);
-
-                let spliced;
-                let noteToGetRidOf = piano.notesList[key];
-                console.log(noteToGetRidOf);
-                piano.notesToPlay = [];
-                piano.synth.triggerRelease(noteToGetRidOf);
-            });
         });
+
+        
+        window.addEventListener("keyup", function(event){
+            let key = event.key;
+            noteToEnd = piano.controller[key].note;
+            piano.controller[key].pressed = false;
+            stopNotes(noteToEnd);
+        });
+
+        playNotes = (note) =>{
+            piano.synth.triggerAttack(note);
+        }
+
+        stopNotes = (note) =>{
+            piano.synth.triggerRelease(note);
+
+        }
+
+
+
+
 
     },
 };
