@@ -181,3 +181,125 @@ piano.addkeyBoardListeners();
 
 // let entries = Object.values(piano.notes);
 // console.log(entries);
+
+Midi ={
+
+    convertedMidiKeyValues : {
+        q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
+        2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
+        w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
+        3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
+        e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
+        r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
+        5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
+        t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
+        6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
+        y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
+        7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
+        u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
+        i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
+        9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
+        o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
+        0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+    }
+
+    resquestMidi : () =>{
+        if (navigator.requestMIDIAccess) {
+            navigator.requestMIDIAccess()
+                .then((success) => {
+                    let MidiAccessObject = success;
+                    Midi.success(MidiAccessObject);
+                }, (failure) =>{
+                    console.error('No access to your midi devices.')
+                });
+        }
+    },
+
+    success : (MidiAccessObject) =>{
+        var inputs = MidiAccessObject.inputs.values();
+        // inputs is an Iterator
+ 
+        for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+            // What this for loop is saying is:
+            // Create a variable called input and assign the next input to it. Because we've not iterated over any inputs yet, 
+            // this will return the first of our inputs.
+            // If we have an input and the input iterator's done value doesn't equal true, then carry on with the loop.
+            // Set input to the next input in our iterator object.
+            input.value.onmidimessage = Midi.onMIDIMessage;
+        }
+    },
+
+    onMIDIMessage : (message) => {
+
+        console.log(message.data[1]);
+        let midiNotePressed = message.data[1];
+        let pressedOrReleased = message.data[0];
+        let isPressed = false;
+        console.log(pressedOrReleased);
+        if(pressedOrReleased == 144){
+            isPressed = true;
+            console.log(isPressed);
+        }
+        if(pressedOrReleased == 128){
+            isPressed = false;
+            console.log(isPressed);
+        }
+    },
+
+
+
+}
+
+Midi.resquestMidi();
+
+
+ 
+// function success (midi) {
+//     var inputs = midi.inputs.values();
+//     // inputs is an Iterator
+ 
+//     for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+//         // What this for loop is saying is:
+//         // Create a variable called input and assign the next input to it. Because we've not iterated over any inputs yet, 
+//         // this will return the first of our inputs.
+//         // If we have an input and the input iterator's done value doesn't equal true, then carry on with the loop.
+//         // Set input to the next input in our iterator object.
+//         input.value.onmidimessage = onMIDIMessage;
+//     }
+// }
+ 
+// function failure () {
+//     console.error('No access to your midi devices.')
+// }
+ 
+// function onMIDIMessage (message) {
+
+//     console.log(message.data[1]);
+//     let midiNotePressed = message.data[1];
+//     let pressedOrReleased = message.data[0];
+//     let isPressed = false;
+//     console.log(pressedOrReleased);
+//     if(pressedOrReleased == 144){
+//         isPressed = true;
+//         console.log(isPressed);
+//     }
+//     if(pressedOrReleased == 128){
+//         isPressed = false;
+//         console.log(isPressed);
+//     }
+
+
+ 
+    // if (message.data[0] === 144 && message.data[2] > 0) {
+    //     console.log("hey");
+    // }
+ 
+    // if (message.data[0] === 128 || message.data[2] === 0) {
+    //     console.log("wow");
+    // }
+// }
+
+// var inputs = midi.inputs.values();
+// console.log(inputs);
+
+
