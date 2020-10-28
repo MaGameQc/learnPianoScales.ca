@@ -70,22 +70,44 @@ const piano = {
     //     },
 
         controller : {
-            q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
-            2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
-            w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
-            3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
-            e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
-            r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
-            5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
-            t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
-            6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
-            y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
-            7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
-            u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
-            i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
-            9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
-            o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
-            0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+            keyboard:{
+                q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
+                2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
+                w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
+                3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
+                e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
+                r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
+                5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
+                t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
+                6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
+                y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
+                7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
+                u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
+                i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
+                9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
+                o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
+                0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+            },
+
+            midiKeyboard:{
+                60 : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
+                61 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
+                62 : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
+                63 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
+                64 : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
+                65 : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
+                66 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
+                67 : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
+                68 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
+                69 : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
+                70 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
+                71 : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
+                72 : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
+                73 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
+                74 : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
+                75 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+            },
+            
         },
 
 
@@ -141,22 +163,22 @@ const piano = {
         window.addEventListener("keydown", function(event){
             console.log("down");
             let key = event.key;
-            let noteToPlay = piano.controller[key].note;
-            if(piano.controller[key].pressed == true){
+            let noteToPlay = piano.controller.keyboard[key].note;
+            if(piano.controller.keyboard[key].pressed == true){
                 return
             }else{
             playNotes(noteToPlay);
-            piano.controller[key].el.backgroundColor = "grey";
+            piano.controller.keyboard[key].el.backgroundColor = "grey";
             }
-            piano.controller[key].pressed = true;
+            piano.controller.keyboard[key].pressed = true;
 
         });
 
         
         window.addEventListener("keyup", function(event){
             let key = event.key;
-            noteToEnd = piano.controller[key].note;
-            piano.controller[key].pressed = false;
+            noteToEnd = piano.controller.keyboard[key].note;
+            piano.controller.keyboard[key].pressed = false;
             stopNotes(noteToEnd);
         });
 
@@ -168,89 +190,139 @@ const piano = {
             piano.synth.triggerRelease(note);
 
         }
+    },
 
-
-
-
-
+    midiKeyboard:{
+        resquestMidi : () =>{
+            if (navigator.requestMIDIAccess) {
+                navigator.requestMIDIAccess()
+                    .then((success) => {
+                        let MidiAccessObject = success;
+                        piano.midiKeyboard.success(MidiAccessObject);
+                    }, (failure) =>{
+                        console.error('No access to your midi devices.')
+                    });
+            }
+        },
+    
+        success : (MidiAccessObject) =>{
+            var inputs = MidiAccessObject.inputs.values();
+            // inputs is an Iterator
+     
+            for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+                // What this for loop is saying is:
+                // Create a variable called input and assign the next input to it. Because we've not iterated over any inputs yet, 
+                // this will return the first of our inputs.
+                // If we have an input and the input iterator's done value doesn't equal true, then carry on with the loop.
+                // Set input to the next input in our iterator object.
+                input.value.onmidimessage = piano.midiKeyboard.onMIDIMessage;
+            }
+        },
+    
+        onMIDIMessage : (message) => {
+    
+            console.log(message.data[1]);
+            let midiNotePressed = message.data[1];
+            let pressedOrReleased = message.data[0];
+            let isPressed = false;
+            console.log(pressedOrReleased);
+            if(pressedOrReleased == 144){
+                isPressed = true;
+                console.log(isPressed);
+                console.log(piano.controller.midiKeyboard[midiNotePressed]);
+                piano.synth.triggerAttack(piano.controller.midiKeyboard[midiNotePressed].note);
+            }
+            if(pressedOrReleased == 128){
+                isPressed = false;
+                console.log(isPressed);
+                piano.synth.triggerRelease(piano.controller.midiKeyboard[midiNotePressed].note);
+    
+            }
+        },
+    
     },
 };
 
 piano.initialiseElementsSelector();
 piano.addkeyBoardListeners();
+piano.midiKeyboard.resquestMidi();
+
 
 // let entries = Object.values(piano.notes);
 // console.log(entries);
 
-Midi ={
+// Midi ={
 
-    convertedMidiKeyValues : {
-        q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
-        2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
-        w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
-        3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
-        e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
-        r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
-        5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
-        t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
-        6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
-        y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
-        7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
-        u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
-        i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
-        9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
-        o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
-        0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
-    }
+//     // midiKeyController : {
+//     //     60 : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
+//     //     61 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
+//     //     62 : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
+//     //     63 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
+//     //     64 : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
+//     //     65 : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
+//     //     66 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
+//     //     67 : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
+//     //     68 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
+//     //     69 : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
+//     //     70 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
+//     //     71 : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
+//     //     72 : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
+//     //     73 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
+//     //     74 : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
+//     //     75 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+//     // },
 
-    resquestMidi : () =>{
-        if (navigator.requestMIDIAccess) {
-            navigator.requestMIDIAccess()
-                .then((success) => {
-                    let MidiAccessObject = success;
-                    Midi.success(MidiAccessObject);
-                }, (failure) =>{
-                    console.error('No access to your midi devices.')
-                });
-        }
-    },
+//     resquestMidi : () =>{
+//         if (navigator.requestMIDIAccess) {
+//             navigator.requestMIDIAccess()
+//                 .then((success) => {
+//                     let MidiAccessObject = success;
+//                     Midi.success(MidiAccessObject);
+//                 }, (failure) =>{
+//                     console.error('No access to your midi devices.')
+//                 });
+//         }
+//     },
 
-    success : (MidiAccessObject) =>{
-        var inputs = MidiAccessObject.inputs.values();
-        // inputs is an Iterator
+//     success : (MidiAccessObject) =>{
+//         var inputs = MidiAccessObject.inputs.values();
+//         // inputs is an Iterator
  
-        for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-            // What this for loop is saying is:
-            // Create a variable called input and assign the next input to it. Because we've not iterated over any inputs yet, 
-            // this will return the first of our inputs.
-            // If we have an input and the input iterator's done value doesn't equal true, then carry on with the loop.
-            // Set input to the next input in our iterator object.
-            input.value.onmidimessage = Midi.onMIDIMessage;
-        }
-    },
+//         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+//             // What this for loop is saying is:
+//             // Create a variable called input and assign the next input to it. Because we've not iterated over any inputs yet, 
+//             // this will return the first of our inputs.
+//             // If we have an input and the input iterator's done value doesn't equal true, then carry on with the loop.
+//             // Set input to the next input in our iterator object.
+//             input.value.onmidimessage = Midi.onMIDIMessage;
+//         }
+//     },
 
-    onMIDIMessage : (message) => {
+//     onMIDIMessage : (message) => {
 
-        console.log(message.data[1]);
-        let midiNotePressed = message.data[1];
-        let pressedOrReleased = message.data[0];
-        let isPressed = false;
-        console.log(pressedOrReleased);
-        if(pressedOrReleased == 144){
-            isPressed = true;
-            console.log(isPressed);
-        }
-        if(pressedOrReleased == 128){
-            isPressed = false;
-            console.log(isPressed);
-        }
-    },
+//         console.log(message.data[1]);
+//         let midiNotePressed = message.data[1];
+//         let pressedOrReleased = message.data[0];
+//         let isPressed = false;
+//         console.log(pressedOrReleased);
+//         if(pressedOrReleased == 144){
+//             isPressed = true;
+//             console.log(isPressed);
+//             console.log(Midi.midiKeyController[midiNotePressed]);
+//             piano.synth.triggerAttack(Midi.midiKeyController[midiNotePressed].note);
+//         }
+//         if(pressedOrReleased == 128){
+//             isPressed = false;
+//             console.log(isPressed);
+//             piano.synth.triggerRelease(Midi.midiKeyController[midiNotePressed].note);
+
+//         }
+//     },
 
 
 
-}
+// }
 
-Midi.resquestMidi();
 
 
  
