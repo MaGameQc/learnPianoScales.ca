@@ -32,82 +32,77 @@ const piano = {
 
     synth: new Tone.PolySynth().toDestination(),
 
+
+
     notes : {
-        c1 : document.querySelector("#c4"),
-        cs1 : document.querySelector("#cs4"),
-        d1 : document.querySelector("#d4"),
-        ds1 : document.querySelector("#ds4"),
-        e1 : document.querySelector("#e4"),
-        f1 : document.querySelector("#f4"),
-        fs1 : document.querySelector("#fs4"),
-        g1 : document.querySelector("#g4"),
-        gs1 : document.querySelector("#gs4"),
-        a1 : document.querySelector("#a4"),
-        as1 : document.querySelector("#as4"),
-        b1 : document.querySelector("#b4"),
-        c2 : document.querySelector("#c5"),
+        c3 : document.querySelector("#c3"),
+        cs3 : document.querySelector("#cs3"),
+        d3 : document.querySelector("#d3"),
+        ds3 : document.querySelector("#ds3"),
+        e3 : document.querySelector("#e3"),
+        f3 : document.querySelector("#f3"),
+        fs3 : document.querySelector("#fs3"),
+        g3 : document.querySelector("#g3"),
+        gs3 : document.querySelector("#gs3"),
+        a3 : document.querySelector("#a3"),
+        as3 : document.querySelector("#as3"),
+        b3 : document.querySelector("#b3"),
+        c4 : document.querySelector("#c4"),
+        cs4 : document.querySelector("#cs4"),
+        d4 : document.querySelector("#d4"),
+        ds4 : document.querySelector("#ds4"),
+        e4 : document.querySelector("#e4"),
+        f4 : document.querySelector("#f4"),
+        fs4 : document.querySelector("#fs4"),
+        g4 : document.querySelector("#g4"),
+        gs4 : document.querySelector("#gs4"),
+        a4 : document.querySelector("#a4"),
+        as4 : document.querySelector("#as4"),
+        b4 : document.querySelector("#b4"),
+        c5 : document.querySelector("#c5"),
+
     },
 
     notesToPlay : [],
 
-    // notesList : {
-    //         "q" : "c3",
-    //         "2" : "c#3",
-    //         "w" : "d3",
-    //         "3" : "d#3",
-    //         "e" : "e3",
-    //         "r" : "f3",
-    //         "5" : "f#3",
-    //         "t" : "g3", 
-    //         "6" : "g#3", 
-    //         "y" : "a3",
-    //         "7" : "a#3", 
-    //         "u" : "b3",
-    //         "i" : "c4", 
-    //         "9" : "c#4",
-    //         "o" : "d4", 
-    //         "0" : "d#4",
-    //     },
-
         controller : {
             keyboard:{
-                q : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
-                2 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
-                w : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
-                3 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
-                e : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
-                r : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
-                5 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
-                t : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
-                6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
-                y : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
-                7 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
-                u : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
-                i : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
-                9 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
-                o : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
-                0 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+                q : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
+                2 : {note : "c#3", pressed : false, el : document.querySelector("#cs3").style},
+                w : {note : "d3", pressed : false, el : document.querySelector("#d3").style},
+                3 : {note : "d#3", pressed : false, el : document.querySelector("#ds3").style},
+                e : {note : "e3", pressed : false, el : document.querySelector("#e3").style},
+                r : {note : "f3", pressed : false, el : document.querySelector("#f3").style},
+                5 : {note : "f#3", pressed : false, el : document.querySelector("#fs3").style},
+                t : {note : "g3",  pressed : false, el : document.querySelector("#g3").style},
+                6 : {note : "g#3",  pressed : false, el : document.querySelector("#gs3").style},
+                y : {note : "a3", pressed : false, el : document.querySelector("#a3").style},
+                7 : {note : "a#3",  pressed : false, el : document.querySelector("#as3").style},
+                u : {note : "b3", pressed : false, el : document.querySelector("#b3").style},
+                i : {note : "c4", pressed : false, el : document.querySelector("#c4").style},
+                9 : {note : "c#4", pressed : false, el : document.querySelector("#cs4").style},
+                o : {note : "d4", pressed : false, el : document.querySelector("#d4").style},
+                0 : {note : "d#4", pressed : false, el : document.querySelector("#ds4").style},
             },
 
             midiKeyboard:{
-                60 : {note : "c3", pressed : false, el : document.querySelector("#c4").style},
-                61 : {note : "c#3", pressed : false, el : document.querySelector("#cs4").style},
-                62 : {note : "d3", pressed : false, el : document.querySelector("#d4").style},
-                63 : {note : "d#3", pressed : false, el : document.querySelector("#ds4").style},
-                64 : {note : "e3", pressed : false, el : document.querySelector("#e4").style},
-                65 : {note : "f3", pressed : false, el : document.querySelector("#f4").style},
-                66 : {note : "f#3", pressed : false, el : document.querySelector("#fs4").style},
-                67 : {note : "g3",  pressed : false, el : document.querySelector("#g4").style},
-                68 : {note : "g#3",  pressed : false, el : document.querySelector("#gs4").style},
-                69 : {note : "a3", pressed : false, el : document.querySelector("#a4").style},
-                70 : {note : "a#3",  pressed : false, el : document.querySelector("#as4").style},
-                71 : {note : "b3", pressed : false, el : document.querySelector("#b4").style},
-                72 : {note : "c4", pressed : false, el : document.querySelector("#c5").style},
-                73 : {note : "c#4", pressed : false, el : document.querySelector("#cs5").style},
-                74 : {note : "d4", pressed : false, el : document.querySelector("#d5").style},
-                75 : {note : "d#4", pressed : false, el : document.querySelector("#ds5").style},
+                60 : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
+                61 : {note : "c#3", pressed : false, el : document.querySelector("#cs3").style},
+                62 : {note : "d3", pressed : false, el : document.querySelector("#d3").style},
+                63 : {note : "d#3", pressed : false, el : document.querySelector("#ds3").style},
+                64 : {note : "e3", pressed : false, el : document.querySelector("#e3").style},
+                65 : {note : "f3", pressed : false, el : document.querySelector("#f3").style},
+                66 : {note : "f#3", pressed : false, el : document.querySelector("#fs3").style},
+                67 : {note : "g3",  pressed : false, el : document.querySelector("#g3").style},
+                68 : {note : "g#3",  pressed : false, el : document.querySelector("#gs3").style},
+                69 : {note : "a3", pressed : false, el : document.querySelector("#a3").style},
+                70 : {note : "a#3",  pressed : false, el : document.querySelector("#as3").style},
+                71 : {note : "b3", pressed : false, el : document.querySelector("#b3").style},
+                72 : {note : "c4", pressed : false, el : document.querySelector("#c4").style},
+                73 : {note : "c#4", pressed : false, el : document.querySelector("#cs4").style},
+                74 : {note : "d4", pressed : false, el : document.querySelector("#d4").style},
+                75 : {note : "d#4", pressed : false, el : document.querySelector("#ds4").style},
             },
-            
         },
 
 
@@ -116,19 +111,19 @@ const piano = {
     notesArray : [], 
 
     initialiseElementsSelector : function(){
+        // const shitty = new this.controller.notesConstructor("q");
+        // console.log(shitty.build());
         let entries = Object.entries(piano.notes);
         let keys = Object.keys(piano.notes);
         let values = Object.values(piano.notes);
         values.forEach(element => {
-
             element.addEventListener("mousedown", async() =>{
                 let id = element.id
+                console.log(id + " ___ down");
                 if(id.includes("s")){
                     id = id.replace("s", "#");
                 }
-                piano.synth.set({ detune: -1200 });
                 piano.synth.triggerAttack([id]);
-                // console.log(piano.synth);
 
             });
 
@@ -137,9 +132,7 @@ const piano = {
                 if(id.includes("s")){
                     id = id.replace("s", "#");
                 }
-                piano.synth.set({ detune: -1200 });
                 piano.synth.triggerRelease([id]);
-                // console.log(piano.synth);
 
             });
 
@@ -148,49 +141,47 @@ const piano = {
                 if(id.includes("s")){
                     id = id.replace("s", "#");
                 }
-                piano.synth.set({ detune: -1200 });
                 piano.synth.triggerRelease([id]);
-                // console.log(piano.synth);
-
             });
         });
     },
 
-    addkeyBoardListeners : function(){
-
-        
-
-        window.addEventListener("keydown", function(event){
-            console.log("down");
-            let key = event.key;
-            let noteToPlay = piano.controller.keyboard[key].note;
-            if(piano.controller.keyboard[key].pressed == true){
-                return
-            }else{
-            playNotes(noteToPlay);
-            piano.controller.keyboard[key].el.backgroundColor = "grey";
+    pcKeyboard :{
+        addListeners : function(){
+            window.addEventListener("keydown", function(event){
+                console.log("down");
+                let key = event.key;
+                let noteToPlay = piano.controller.keyboard[key].note;
+                if(piano.controller.keyboard[key].pressed == true){
+                    return
+                }else{
+                playNotes(noteToPlay);
+                piano.controller.keyboard[key].el.backgroundColor = "grey";
+                }
+                piano.controller.keyboard[key].pressed = true;
+    
+            });
+    
+            
+            window.addEventListener("keyup", function(event){
+                let key = event.key;
+                noteToEnd = piano.controller.keyboard[key].note;
+                piano.controller.keyboard[key].pressed = false;
+                stopNotes(noteToEnd);
+            });
+    
+            playNotes = (note) =>{
+                piano.synth.triggerAttack(note);
             }
-            piano.controller.keyboard[key].pressed = true;
-
-        });
-
-        
-        window.addEventListener("keyup", function(event){
-            let key = event.key;
-            noteToEnd = piano.controller.keyboard[key].note;
-            piano.controller.keyboard[key].pressed = false;
-            stopNotes(noteToEnd);
-        });
-
-        playNotes = (note) =>{
-            piano.synth.triggerAttack(note);
-        }
-
-        stopNotes = (note) =>{
-            piano.synth.triggerRelease(note);
-
-        }
+    
+            stopNotes = (note) =>{
+                piano.synth.triggerRelease(note);
+    
+            }
+        },
     },
+
+
 
     midiKeyboard:{
         resquestMidi : () =>{
@@ -231,12 +222,19 @@ const piano = {
                 console.log(isPressed);
                 console.log(piano.controller.midiKeyboard[midiNotePressed]);
                 piano.synth.triggerAttack(piano.controller.midiKeyboard[midiNotePressed].note);
+                piano.controller.midiKeyboard[midiNotePressed].el.boxShadow = "2px 0 3px rgba(0,0,0,0.1) inset,-5px 5px 20px rgba(0,0,0,0.2) inset,0 0 3px rgba(0,0,0,0.2)";
+                piano.controller.midiKeyboard[midiNotePressed].el.background = "linear-gradient(to bottom,#fff 0%,#e9e9e9 100%)";
+                piano.controller.midiKeyboard[midiNotePressed].el.border = "0.5rem solid black";
+
             }
             if(pressedOrReleased == 128){
                 isPressed = false;
                 console.log(isPressed);
                 piano.synth.triggerRelease(piano.controller.midiKeyboard[midiNotePressed].note);
-    
+                piano.controller.midiKeyboard[midiNotePressed].el.backgroundColor = "white";
+                piano.controller.midiKeyboard[midiNotePressed].el.boxShadow = "inset 0 0 0.5rem rgba(0,0,0,0.2)";
+                piano.controller.midiKeyboard[midiNotePressed].el.background = "linear-gradient(to bottom,#eee 0%,#fff 100%)";
+                piano.controller.midiKeyboard[midiNotePressed].el.border = "1px solid black";
             }
         },
     
@@ -244,7 +242,7 @@ const piano = {
 };
 
 piano.initialiseElementsSelector();
-piano.addkeyBoardListeners();
+piano.pcKeyboard.addListeners();
 piano.midiKeyboard.resquestMidi();
 
 
