@@ -28,6 +28,9 @@ const test = document.querySelector(".cs1");
 
 
 
+
+
+
 const piano = {
 
     synth: new Tone.PolySynth().toDestination(),
