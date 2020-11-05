@@ -35,10 +35,40 @@ const piano = {
 
     synth: new Tone.PolySynth().toDestination(),
 
-
+    notes2: {
+        c3 : {
+            name : "c3",
+            element : document.querySelector("#c3"),
+            pckeyboardKey : "q",
+            midiKeyboardKey : 60,
+            isPressed : false,
+        },
+        cs3 : {
+            name : "cs3",
+            element : document.querySelector("#cs3"),
+            pckeyboardKey : "q",
+            midiKeyboardKey : 60,
+            isPressed : false,
+        },
+        d3 : {
+            name : "d3",
+            element : document.querySelector("#d3"),
+            pckeyboardKey : "q",
+            midiKeyboardKey : 60,
+            isPressed : false,
+        },
+        ds3 : {
+            name : "ds3",
+            element : document.querySelector("#ds3"),
+            pckeyboardKey : "q",
+            midiKeyboardKey : 60,
+            isPressed : false,
+        },
+        
+    },
 
     notes : {
-        c3 : document.querySelector("#c3"),
+        // c3 : document.querySelector("#c3"),
         cs3 : document.querySelector("#cs3"),
         d3 : document.querySelector("#d3"),
         ds3 : document.querySelector("#ds3"),
@@ -66,11 +96,15 @@ const piano = {
 
     },
 
+
+
+
+
     notesToPlay : [],
 
         controller : {
             keyboard:{
-                q : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
+                // q : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
                 2 : {note : "c#3", pressed : false, el : document.querySelector("#cs3").style},
                 w : {note : "d3", pressed : false, el : document.querySelector("#d3").style},
                 3 : {note : "d#3", pressed : false, el : document.querySelector("#ds3").style},
@@ -89,7 +123,7 @@ const piano = {
             },
 
             midiKeyboard:{
-                60 : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
+                // 60 : {note : "c3", pressed : false, el : document.querySelector("#c3").style},
                 61 : {note : "c#3", pressed : false, el : document.querySelector("#cs3").style},
                 62 : {note : "d3", pressed : false, el : document.querySelector("#d3").style},
                 63 : {note : "d#3", pressed : false, el : document.querySelector("#ds3").style},
@@ -114,6 +148,9 @@ const piano = {
     notesArray : [], 
 
     initialiseElementsSelector : function(){
+
+        // console.log(this.newNotes("c3"));
+        // console.log(this.allNotes.c3);
         // const shitty = new this.controller.notesConstructor("q");
         // console.log(shitty.build());
         let entries = Object.entries(piano.notes);
